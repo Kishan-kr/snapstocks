@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap');
+
+/* body{background: rgb(44, 43, 43);} */
+.dropdown-menu::before, .dropdown-menu::after {
+  content: '';
+  width: 0;
+	height: 0;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-bottom: 8px solid rgba(0, 0, 0, 0.4);
+  position: absolute;
+  bottom: 100%;
+  right: 8px;
+}
+.dropdown-menu::after {
+	border-bottom: 8px solid white;
+}
+
+.dropdown-menu.show {
+  animation: scale-up 200ms linear forwards;
+}
+.dropdown-menu.hide {
+  animation: scale-down 100ms ease-in-out forwards;
+}
+
+.select-menu.show {
+  animation: scale-up 200ms linear forwards;
+}
+.select-menu.hide {
+  animation: scale-down 100ms ease-in-out forwards;
+}
+
+.tooltip.show {
+  animation: scale-up 200ms linear forwards;
+}
+.tooltip.hide {
+  animation: scale-down 100ms ease-in-out forwards;
+}
+
+@keyframes scale-up {
+  0% {
+    transform: scale(0.9);
+    display: none;
+  }
+  1% {display: block;}
+  50% { transform: scale(1.05);}
+  100% { transform: scale(1);}
+}
+
+@keyframes scale-down {
+  0% {
+    transform: scale(1);
+    display: block;
+  }
+  100% { transform: scale(0); display: none;}
+}
+
+/* masonry layout  */
+.masonry-grid {
+  display: -webkit-box; /* Not needed if autoprefixing */
+  display: -ms-flexbox; /* Not needed if autoprefixing */
+  display: flex;
+  width: auto;
+}
+.masonry-grid-col {
+  background-clip: padding-box;
+}
+
+
+
+/* color pallete */
+/* #FFFFFF, #07A081, #000000, #858585, #2C343E */
+
+.caret-down::before, .caret-down::after {
+  content: '';
+  width: 0;
+	height: 0;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-top: 8px solid rgba(255, 255, 255, 0.3);
+  position: absolute;
+  top: 100%;
+  left: 8px;
+}
+
+.caret-down::after {
+	border-top: 8px solid  rgba(255, 255, 255, 0.3);
+}
