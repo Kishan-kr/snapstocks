@@ -14,7 +14,7 @@ router.post('/:userId', authenticate, async (req, res) => {
   const followeeId = req.params.userId;
 
   try {
-    if(followeeId === followeeId) {
+    if(followerId === followeeId) {
       return res.status(409).json({error: 'Not allowed'})
     }
     

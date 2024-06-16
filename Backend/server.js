@@ -19,6 +19,7 @@ const FollowingRoutes = require('./Routes/Following/FollowingRoutes');
 
 // configure cors 
 const corsOptions = {
+  credentials: true,
   origin: clientOrigin,
 };
 
