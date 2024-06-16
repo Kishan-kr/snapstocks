@@ -1,3 +1,4 @@
+const optionalAuthenticate = require('../../Middlewares/OptionalAthenticate');
 const Image = require('../../Models/Image');
 
 const router = require('express').Router();
@@ -5,19 +6,19 @@ const router = require('express').Router();
 //@description     Get count of images 
 //@route           GET /api/images/count
 //@access          Public
-router.get('/count', async (req, res) => {
+router.get('/count', optionalAuthenticate, async (req, res) => {
+  const userId = req.user?._id || null;
   // count images by user if userId available 
-  if(req.body.userId) {
-    const userId = req.body.userId;
+  if(userId) {
     const count = await Image.countDocuments({user: userId});
-    return res.status(200).send(count);
+    return res.status(200).json({message: 'Images counted', data: count});
   }
 
   // count queried images 
   const keywords = req.query.keywords || '';
 
   const query = {
-    $match: { $text: { $search: keywords } }
+    $text: { $search: keywords }
   }
 
   // Check if the dimension filter is provided in the request
@@ -26,10 +27,10 @@ router.get('/count', async (req, res) => {
 
     if (dimensionFilter === 'landscape') {
       // Filter for landscape images (width > height)
-      query.$match.width = { $gt: "$height" };
+      query.$expr = { $gt: ["$width", "$height"] };
     } else if (dimensionFilter === 'portrait') {
       // Filter for portrait images (height > width)
-      query.$match.height = { $gt: "$width" };
+      query.$expr = { $gt: ["$height", "$width"] };
     }
     // For 'all', no additional filtering is applied
   }
@@ -38,11 +39,11 @@ router.get('/count', async (req, res) => {
     // count the no of images by passing query
     const count = await Image.countDocuments(query);
 
-    res.status(200).send(count);
+    res.status(200).json({message: 'Images found', data: count});
 
   } catch (error) {
     console.error('Error counting images: ', error);
-    res.status(500).json({ 'error': 'Server error' });
+    res.status(500).json({ 'error': `Error while getting count of images: ${error.message}` });
   }
 })
 

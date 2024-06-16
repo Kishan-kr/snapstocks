@@ -18,7 +18,7 @@ router.post('/', authenticate, [
     return true;
   })
 ], async (req, res) => {
-  const userId = req.user.id;
+  const userId = req.user._id;
 
   // check for validation errors 
   const errors = validationResult(req);
@@ -47,7 +47,7 @@ router.post('/', authenticate, [
       return res.status(400).json({ error: 'Unable to upload'})
     }
 
-    res.status(200).json({message: 'Image uploaded', uploadedImage})
+    res.status(200).json({message: 'Image uploaded', data: uploadedImage})
    }) 
   } catch (error) {
     console.error('Error uploading image: ', error)

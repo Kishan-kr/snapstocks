@@ -5,7 +5,7 @@ const Image = require('../Models/Image');
 // Rate limiting: Limit requests from same IP address
 const downloadLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
-  max: 3, // Allow only 2 requests per windowMs
+  max: 3, // Allow only 3 requests per windowMs
 });
 
 // Downloads count tracking middleware
@@ -22,7 +22,7 @@ const trackDownload = async (req, res, next) => {
     next();
   } catch (error) {
     console.error('Error tracking download:', error);
-    res.status(500).json({ error: 'Error tracking download' });
+    res.status(500).json({ error: `Error tracking download: ${error.message}` });
   }
 };
 

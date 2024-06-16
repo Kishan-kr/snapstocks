@@ -72,11 +72,11 @@ router.put('/', authenticate,
       return res.status(404).json({ error: 'User not found' });
     }
 
-    return res.status(200).json({message: 'User updated successfully', updatedUser});
+    return res.status(200).json({message: 'User updated successfully', data: updatedUser});
 
   } catch (err) {
     console.error('Error updating user:', err);
-    return res.status(500).json({ error: 'Server error' });
+    return res.status(500).json({ error: `Error while updating user: ${err.message}` });
   }
 })
 module.exports = router;

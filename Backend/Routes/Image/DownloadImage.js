@@ -1,17 +1,19 @@
 // routes/imageRoutes.js
 const express = require('express');
-const { downloadLimiter, trackDownload } = require('../../Middlewares/DownloadMiddleware');
+const { downloadLimiter } = require('../../Middlewares/DownloadMiddleware');
 const Image = require('../../Models/Image');
 const fetch = require('node-fetch') // Import the 'node-fetch' library
 const DownloadHistory = require('../../Models/DownloadHistory');
 const router = express.Router();
+const { getCloudinaryUrl } = require('../../Utils/ConfigCloudinary');
+const optionalAuthenticate = require('../../Middlewares/OptionalAthenticate');
 
 
 //@description     Download an image
 //@route           GET /api/images/imageid/download
 //@access          Public
-router.get('/:id/download', downloadLimiter, trackDownload, async (req, res) => {
-  const userId = req.body?.userId || null;
+router.get('/:id/download', downloadLimiter, optionalAuthenticate, async (req, res) => {
+  const userId = req.user?._id || null;
 
   try {
     // Retrieve the image by ID
@@ -29,23 +31,20 @@ router.get('/:id/download', downloadLimiter, trackDownload, async (req, res) => 
     const originalWidth = image.width;
 
     if (desiredWidth === '640') {
-      transformation = { width: 640, height: originalHeight/(originalWidth/640), crop: 'fill' };
+      transformation = { width: 640, height: Math.floor(originalHeight/(originalWidth/640)), crop: 'fill' };
     } else if (desiredWidth === '1920') {
-      transformation = { width: 1920, height: originalHeight/(originalWidth/1920), crop: 'fill' };
+      transformation = { width: 1920, height: Math.floor(originalHeight/(originalWidth/1920)), crop: 'fill' };
     } else if (desiredWidth === '2400') {
-      transformation = { width: 2400, height: originalHeight/(originalWidth/2400), crop: 'fill' };
+      transformation = { width: 2400, height: Math.floor(originalHeight/(originalWidth/2400)), crop: 'fill' };
     }
 
     // Construct the Cloudinary image URL with the transformation options
-    const imageUrl = cloudinary.url(image.publicId, {
-      ...transformation,
-      secure: true, // Ensure the URL is HTTPS
-    });
+    const imageUrl = getCloudinaryUrl(image.publicId, transformation);
 
     // Fetch the image data from the Cloudinary URL
     const response = await fetch(imageUrl);
     if (!response.ok) {
-      throw new Error('Error fetching image');
+      throw new Error('Error fetching image from cloudinary');
     }
 
     // Get the image data and content type from the response
@@ -76,7 +75,7 @@ router.get('/:id/download', downloadLimiter, trackDownload, async (req, res) => 
     res.send(imageData);
   } catch (error) {
     console.error('Error downloading image:', error);
-    res.status(500).json({ error: 'Error downloading image' });
+    res.status(500).json({ error: `Error downloading image: ${error.message}` });
   }
 });
 

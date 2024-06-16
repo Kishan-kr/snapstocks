@@ -23,7 +23,7 @@ const imageSchema = new mongoose.Schema({
   },
 })
 
-// text index with different field weights
+// text index with different field weights(weights must be in whole numbers)
 imageSchema.index(
   {
     description: 'text',
@@ -32,9 +32,9 @@ imageSchema.index(
   },
   {
     weights: {
-      description: 2,   // Higher weight for 'description'
-      tags: 1.5,          // Moderate weight for 'tags'
-      location: 0.5,    // Lower weight for 'location'
+      description: 4,   // Higher weight for 'description'
+      tags: 3,          // Moderate weight for 'tags'
+      location: 1,    // Lower weight for 'location'
     },
   }
 );

@@ -23,7 +23,7 @@ router.post('/login', [
 
   try {
     // find user with the provided email 
-    const user = await User.findOne({email})
+    let user = await User.findOne({email})
 
     // Return if user does not exist with this email 
     if(!user) {
@@ -44,6 +44,7 @@ router.post('/login', [
       name: user.name,
       email: user.email
     }
+    
     const token = generateToken(payload)
     res.cookie('access-token', token, {
       httpOnly: true,
@@ -52,6 +53,7 @@ router.post('/login', [
       maxAge: 24 * 60 * 60 * 1000
     })
 
+    user.password = null
     res.status(200).json({message: 'Login successful', data: user});
     
   } catch (error) {

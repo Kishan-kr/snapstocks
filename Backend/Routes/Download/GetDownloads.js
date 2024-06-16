@@ -8,16 +8,13 @@ const DownloadHistory = require('../../Models/DownloadHistory');
 //@route           GET /api/downloads/
 //@access          Protected
 router.get('/', authenticate, async (req, res) => {
-  // Find the client's ID from the authenticated request
-  const userId = req.user.id;
-
   const items = Number(req.query.items) || 10;
   const page = Number(req.query.page) || 1;
   const skipCount = (page - 1) * items;
 
   try {
     // Find the list of downloaded images
-    const downloads = await DownloadHistory.find({ user: userId })
+    const downloads = await DownloadHistory.find({ user: req.user._id })
     .sort('-createdAt')
     .skip(skipCount)
     .limit(items)
@@ -26,15 +23,15 @@ router.get('/', authenticate, async (req, res) => {
       select: 'user imageUrl',
       populate: {
         path: 'user',
-        select: 'name username'
+        select: 'firstName lastName username'
       }
     });
 
     // Return the array of downloaded docs
-    res.status(200).json({ downloads });
+    res.status(200).json({ message: 'Fetched downloads', data: downloads });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: `Error getting download history: ${error.message}` });
   }
 });
 

@@ -10,7 +10,7 @@ router.get('/search', async (req, res) => {
   const keywords = req.query.keywords;
   console.log(keywords)
   if (!keywords) {
-    return res.status(400).json({ message: 'Keywords are required for the search.' });
+    return res.status(400).json({ error: 'Keywords are required for the search.' });
   }
 
   const itemsPerPage = parseInt(req.query.items, 10) || 10;
@@ -62,7 +62,7 @@ router.get('/search', async (req, res) => {
     if (!users) {
       console.log('No user found');
     }
-    return res.status(200).json({ users });
+    return res.status(200).json({message: 'Users fetched', data: users });
   } catch (error) {
     console.error('Error searching users:', error.message);
     res.status(500).json({ error: `Error while searching users: ${error.message}` });

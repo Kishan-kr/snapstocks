@@ -52,11 +52,11 @@ router.put('/change-password', authenticate, [
 
     if(!updatedUser) {
       console.error('Error updating password')
-      return res.status(501).json({success, error: 'Error updating password'})
+      return res.status(501).json({ error: 'Error updating password'})
     }
 
     success = true;
-    res.status(200).json({message: 'Password updated successfully', updatedUser})
+    res.status(200).json({message: 'Password updated successfully', data: updatedUser})
 
   } catch (error) {
     if(error) {

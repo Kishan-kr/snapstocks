@@ -23,10 +23,10 @@ router.get('/users/:userId', async (req, res) => {
       return res.status(200).json({ message: 'No image found', images });
     }
 
-    res.status(200).json({ images });
+    res.status(200).json({ message: 'Images fetched', data: images });
   } catch (error) {
-    console.error('Error fetching images: ', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error('Error fetching user images: ', error);
+    res.status(500).json({ error: `Error fetching user images: ${error.message}` });
   }
 });
 

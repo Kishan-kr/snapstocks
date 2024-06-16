@@ -14,7 +14,7 @@ router.get('/images', authenticate, async (req, res) => {
 
   try {
     // Find the user's ID from the authenticated request
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     // Find users the client is following
     const following = await Following.find({ follower: userId }).select('followee');
@@ -27,12 +27,12 @@ router.get('/images', authenticate, async (req, res) => {
     .sort('-createdAt')
     .skip(skipCount)
     .limit(items)
-    .populate({path: 'user', select: 'name profilePic hireable'});
+    .populate({path: 'user', select: 'firstName lastName profilePic hireable'});
 
-    res.status(200).json(images);
+    res.status(200).json({message: 'Images of your followings', data: images});
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: `Error while getting following images: ${error.message}` });
   }
 });
 

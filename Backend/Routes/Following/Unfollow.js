@@ -8,7 +8,7 @@ const Following = require('../../Models/Following');
 //@access          Protected
 router.delete('/:userId', authenticate, async (req, res) => {
   // Find the client's ID from the authenticated request
-  const followerId = req.user.id;
+  const followerId = req.user._id;
 
   // Find the followee's ID from the param
   const followeeId = req.params.userId;
@@ -26,10 +26,10 @@ router.delete('/:userId', authenticate, async (req, res) => {
     }
 
     // Return the following doc on success
-    res.status(200).json({message: 'Unfollowed', deletedFollowing});
+    res.status(200).json({message: 'Unfollowed', data: deletedFollowing});
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: `Error while Unfollowing: ${error.message}` });
   }
 });
 

@@ -8,12 +8,25 @@ const Following = require('../../Models/Following');
 //@access          Protected
 router.post('/:userId', authenticate, async (req, res) => {
   // Find the client's ID from the authenticated request
-  const followerId = req.user.id;
+  const followerId = req.user._id;
 
   // Find the followee's ID from the param
   const followeeId = req.params.userId;
 
   try {
+    if(followeeId === followeeId) {
+      return res.status(409).json({error: 'Not allowed'})
+    }
+    
+    // check if user has already followed 
+    const hasFollowed = await Following.findOne({
+      followee: followeeId,
+      follower: followerId
+    })
+    if(hasFollowed) {
+      return res.status(200).json({message: 'Already following', data: hasFollowed})
+    }
+
     // Create a following doc
     const following = await Following.create({ 
       follower: followerId, 
@@ -26,10 +39,10 @@ router.post('/:userId', authenticate, async (req, res) => {
     }
 
     // Return the following doc on success
-    res.status(200).json({message: 'Followed', following});
+    res.status(200).json({message: 'Followed', data: following});
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: `Error while following: ${error.message}` });
   }
 });
 

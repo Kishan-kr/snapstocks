@@ -8,7 +8,7 @@ const router = require('express').Router();
 //@route           PUT /api/images/imageid/like?like=1 | 0
 //@access          Protected
 router.put('/:id/like', authenticate, async (req, res) => {
-  const userId = req.user.id;
+  const userId = req.user._id;
   const imageId = req.params.id;
 
   try {
@@ -18,6 +18,14 @@ router.put('/:id/like', authenticate, async (req, res) => {
     }
 
     if(Number(req.query.like) === 1) {
+      const hasUserAlreadyLiked = await UserImageLike.findOne({
+        user: userId, 
+        image: image._id
+      })
+      if(hasUserAlreadyLiked) {
+        return res.status(200).json({message: 'Liked'})
+      }
+
       // Increment likes count of image
       image.likes += 1;
       await image.save();
@@ -34,9 +42,17 @@ router.put('/:id/like', authenticate, async (req, res) => {
       userWhoLike.imageLikeCount += 1;
       await userWhoLike.save();
 
-      return res.status(200).json({ message: 'Liked' });
+      return res.status(200).json({ message: 'Liked'});
     }
     else if(Number(req.query.like) === 0) {
+      const hasUserLikedImage = await UserImageLike.findOne({
+        user: userId,
+        image: image._id
+      })
+      if(!hasUserLikedImage) {
+        return res.status(200).json({ message: 'Unliked' });
+      }
+      
       // Decrement likes count of image
       image.likes -= 1;
       await image.save();
@@ -54,10 +70,13 @@ router.put('/:id/like', authenticate, async (req, res) => {
       
       return res.status(200).json({ message: 'Unliked' });
     }
+    else {
+      throw new Error("Can't decide whether to like or unlike")
+    }
 
   } catch (error) {
     console.error('Error liking image:', error);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: `Error liking image: ${error.message}` });
   }
 
 })

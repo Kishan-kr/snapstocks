@@ -19,7 +19,7 @@ router.get('/search/:id', (req, res)=> {
   } catch(error) {
     if(error){
       console.error('Error Fetching user: ', error);
-      res.status(501).json({ error: "Something went wrong while fetching user"})
+      res.status(501).json({ error: `Error while fetching user: ${error.message}`})
     }
   }
 })

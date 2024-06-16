@@ -10,11 +10,12 @@ const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 
 // import routes 
-const Auth = require('./Routes/Auth/Auth')
-const User = require('./Routes/User/User')
-const Image = require('./Routes/Image/Image')
+const AuthRoutes = require('./Routes/Auth/Auth')
+const UserRoutes = require('./Routes/User/User')
+const ImageRoutes = require('./Routes/Image/Image')
+const DownloadRoutes = require('./Routes/Download/DownloadRoutes')
 const CollectionRoutes = require('./Routes/Collection/CollectionRoutes')
-const FollowingRoutes = require('./Routes/Following/FollowingRoutes')
+const FollowingRoutes = require('./Routes/Following/FollowingRoutes');
 
 // configure cors 
 const corsOptions = {
@@ -26,7 +27,6 @@ app.use(express.json({limit: '16kb'})); // to parse incoming request body
 app.use(cors(corsOptions)); // to handle cors
 app.use(fileUpload()) // to handle file uploads
 app.use(cookieParser()); // to access cookies from request
-
 
 // Configure express-session
 // app.use(session({
@@ -46,9 +46,10 @@ app.get('/', (req, res)=> {
 })
 
 // API routes 
-app.use('/api/auth', Auth);
-app.use('/api/users', User);
-app.use('/api/images', Image);
+app.use('/api/auth', AuthRoutes);
+app.use('/api/users', UserRoutes);
+app.use('/api/images', ImageRoutes);
+app.use('/api/downloads', DownloadRoutes);
 app.use('/api/collections', CollectionRoutes);
 app.use('/api/following', FollowingRoutes);
 

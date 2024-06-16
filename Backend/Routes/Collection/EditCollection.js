@@ -7,10 +7,10 @@ const router = require('express').Router()
 //@route           PUT /api/collections/edit/id
 //@access          Protected
 router.put('/edit/:id', authenticate, [
-  body('name').exists().withMessage("Collection name cannot be empty")
+  body('name').optional().exists().withMessage("Collection name cannot be empty")
 ], async (req, res) => {
   const collectionId = req.params.id;
-  const user = req.user.id;
+  const user = req.user._id;
   
   // return if validation errors 
   const errors = validationResult(req);
@@ -29,6 +29,9 @@ router.put('/edit/:id', authenticate, [
   if(req.body.private) {
     update.private = req.body.private;
   }
+  if(!update.name && !update.description && !update.private) {
+    return res.status(400).json({error: 'Nothing to update'})
+  }
 
   try {
     const collection = await ImageCollection.findOneAndUpdate({
@@ -40,10 +43,10 @@ router.put('/edit/:id', authenticate, [
       return res.status(400).json({error: 'Unable to update'})
     }
 
-    res.status(200).json({message: 'Collection updated', collection});
+    res.status(200).json({message: 'Collection updated', data: collection});
   } catch (error) {
     console.log('Error updating collection: ', error);
-    res.status(500).json({error: 'Server error'});
+    res.status(500).json({error: `Error updating collection: ${error.message}`});
   }
 })
 

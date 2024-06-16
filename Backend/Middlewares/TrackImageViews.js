@@ -3,16 +3,16 @@ const ImageView = require("../Models/ImageView");
 
 async function trackImageViews (req, res, next) {
   const imageId = req.params.imageId;
+  const userId = req.headers['x-user-id'] || null;
 
   // Check if the user is authenticated
-  if (req.body.userId) {
-    const userId = req.body.userId;
+  if (userId) {
 
     // check if user has already viewed this image 
-    const isViewed = await ImageView.findOne({ imageId, userId });
+    const hasViewed = await ImageView.findOne({ imageId, userId });
 
     // if not create new ImageView doc and inc views
-    if(!isViewed) {
+    if(!hasViewed) {
       await ImageView.create({
         imageId,
         userId,

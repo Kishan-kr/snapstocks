@@ -1,21 +1,22 @@
 const ImageCollection = require('../../Models/ImageCollection');
+const optionalAuthenticate = require('../../Middlewares/OptionalAthenticate')
 const router = require('express').Router()
 
 //@description     Get collection by id
 //@route           GET /api/collections/id
 //@access          Public
-router.get('/:id', async (req, res) => {
+router.get('/:id', optionalAuthenticate, async (req, res) => {
   const id = req.params.id
-
+  
   try {
     const collection = await ImageCollection.findById(id);
 
     if(!collection) {
       return res.status(400).json({error: 'Collection not found'});
     }
-
+    
     // Private collection can only be accessed by its owner 
-    if(collection.private && collection.user !== req.body?.userId) {
+    if(collection.private && collection.user.toString() !== req.user?._id) {
       return res.status(401).json({error: 'Access denied'})
     }
 

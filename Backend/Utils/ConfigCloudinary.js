@@ -45,4 +45,12 @@ const deleteFromCloudinary = (public_id) => {
   });
 };
 
-module.exports = {uploadToCloudinary, deleteFromCloudinary};
+// contruct cloudinary url 
+const getCloudinaryUrl = (public_id, options) => {
+  return cloudinary.url(public_id, {
+    ...options,
+    secure: true // Ensure the URL is HTTPS
+  })
+}
+
+module.exports = { uploadToCloudinary, deleteFromCloudinary, getCloudinaryUrl };

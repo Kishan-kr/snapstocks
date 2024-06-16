@@ -35,11 +35,11 @@ router.put('/', authenticate, async (req, res) => {
       // increment imageCount of the collection 
       ImageCollection.findByIdAndUpdate(collection, {$inc: {imageCount: 1}});
 
-      return res.status(200).json({message: 'Image added', image: addedImage})
+      return res.status(200).json({message: 'Image added', data: addedImage})
     }
 
     // Remove image from collection
-    else {
+    else if(action === 0) {
       const removedImage = CollectionImageRelation.findOneAndDelete({
         imageCollection: collection,
         image
@@ -52,12 +52,15 @@ router.put('/', authenticate, async (req, res) => {
       // decrement imageCount of the collection 
       ImageCollection.findByIdAndUpdate(collection, {$inc: {imageCount: -1}});
 
-      return res.status(200).json({message: 'Image removed', image: removedImage})
+      return res.status(200).json({message: 'Image removed', data: removedImage})
+    }
+    else {
+      res.status(400).json({error: 'Invalid request'})
     }
     
   } catch (error) {
     console.log('Error updating collection: ', error);
-    res.status(500).json({error: 'Server error'});
+    res.status(500).json({error: `Error updating collection: ${error.message}`});
   }
 })
 

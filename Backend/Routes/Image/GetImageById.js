@@ -13,17 +13,17 @@ router.get('/:imageId', trackImageViews, async (req, res) => {
     const image = await Image.findById(imageId)
     .populate({
       path: 'user',
-      select: 'name username profilePic'
+      select: 'firstName lastName username profilePic name'
     });
 
     if (!image) {
       return res.status(404).json({ error: 'Image not found' });
     }
 
-    res.status(200).json({ image });
+    res.status(200).json({ message: 'Image fetched', data: image });
   } catch (error) {
-    console.error('Error fetching images: ', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error('Error fetching image: ', error);
+    res.status(500).json({ error: `Error fetching image: ${error.message}`});
   }
 });
 

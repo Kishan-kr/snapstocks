@@ -15,7 +15,7 @@ router.get('/', authenticate, async (req, res) => {
     res.status(200).json({message: 'User retrieved', data: user});
   } catch (error) {
     console.error('Error while retrieving user:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: `Error while retrieving user: ${error.message}` });
   }
 })
 
