@@ -4,9 +4,10 @@ import Searchbar from './Searchbar';
 import Dropdown from './Dropdown';
 import { HiBars3CenterLeft } from 'react-icons/hi2'
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function Navbar() {
-  const [loggedIn, setLoggedIn] = useState(true);
+  const { loggedIn, profilePic } = useSelector(state => state.user);
 
   return (
     <nav className=''>
@@ -24,7 +25,7 @@ function Navbar() {
         </li>
 
         {loggedIn ? <Dropdown 
-            toggleButton={<span className='w-8 h-8 aspect-square rounded-full border'> <img src="" alt="" /> </span>}>
+            toggleButton={<span className='w-8 h-8 aspect-square rounded-full border'> <img src={profilePic} alt="" /> </span>}>
             <div className='w-48'>
               <ul className="py-1 px-2 text-start" role="none">
                 <li><Link to="/@johndoe" className="text-gray-light block px-4 py-2 text-sm hover:text-gray-dark" role="menuitem" tabIndex="-1">View profile</Link></li>

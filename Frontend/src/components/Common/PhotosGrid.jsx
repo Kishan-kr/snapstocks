@@ -2,7 +2,7 @@ import React from "react";
 import Masonry from "react-masonry-css";
 import { FaHeart } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
-import { IoChevronDown, IoArrowDown } from "react-icons/io5";
+import { IoChevronDown, IoArrowDown, IoCheckmarkCircleSharp } from "react-icons/io5";
 import Dropdown from "./Dropdown";
 import { Link } from "react-router-dom";
 import Tooltip from "./Tooltip";
@@ -10,48 +10,51 @@ import ProfilePreview from "./ProfilePreview";
 
 const images = [
   {
-    url: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&q=80&w=800",
+    user: {firstName: 'kishan', lastName: 'kumar', username: 'kishankumar', profilePic: ''}, imageUrl: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&q=80&w=800",
     width: 800,
   },
   {
-    url: "https://images.unsplash.com/photo-1699794369704-bfdaa57cd8df?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw3fHx8ZW58MHx8fHx8",
+    user: {firstName: 'kishan', lastName: 'kumar', username: 'kishankumar', profilePic: ''}, imageUrl: "https://images.unsplash.com/photo-1699794369704-bfdaa57cd8df?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw3fHx8ZW58MHx8fHx8",
     width: 400,
   },
   {
-    url: "https://images.unsplash.com/photo-1476657680631-c07285ff2581?auto=format&fit=crop&q=80&w=600",
+    user: {firstName: 'kishan', lastName: 'kumar', username: 'kishankumar', profilePic: ''}, imageUrl: "https://images.unsplash.com/photo-1476657680631-c07285ff2581?auto=format&fit=crop&q=80&w=600",
     width: 600,
   },
   {
-    url: "https://images.unsplash.com/photo-1499952127939-9bbf5af6c51c?auto=format&fit=crop&q=80&w=960",
+    user: {firstName: 'kishan', lastName: 'kumar', username: 'kishankumar', profilePic: ''}, imageUrl: "https://images.unsplash.com/photo-1499952127939-9bbf5af6c51c?auto=format&fit=crop&q=80&w=960",
     width: 960,
   },
   {
-    url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=740",
+    user: {firstName: 'kishan', lastName: 'kumar', username: 'kishankumar', profilePic: ''}, imageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=740",
     width: 740,
   },
   {
-    url: "https://images.unsplash.com/photo-1535965128466-31ce8adc78ea?auto=format&fit=crop&q=80&w=420",
+    user: {firstName: 'kishan', lastName: 'kumar', username: 'kishankumar', profilePic: ''}, imageUrl: "https://images.unsplash.com/photo-1535965128466-31ce8adc78ea?auto=format&fit=crop&q=80&w=420",
     width: 420,
   },
   {
-    url: "https://images.unsplash.com/photo-1557862921-37829c790f19?auto=format&fit=crop&q=80&w=560",
+    user: {firstName: 'kishan', lastName: 'kumar', username: 'kishankumar', profilePic: ''}, imageUrl: "https://images.unsplash.com/photo-1557862921-37829c790f19?auto=format&fit=crop&q=80&w=560",
     width: 560,
   },
   {
-    url: "https://images.unsplash.com/photo-1525875975471-999f65706a10?auto=format&fit=crop&q=80&w=400",
+    user: {firstName: 'kishan', lastName: 'kumar', username: 'kishankumar', profilePic: ''}, imageUrl: "https://images.unsplash.com/photo-1525875975471-999f65706a10?auto=format&fit=crop&q=80&w=400",
     width: 400,
   },
   {
-    url: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?auto=format&fit=crop&q=80&w=800",
+    user: {firstName: 'kishan', lastName: 'kumar', username: 'kishankumar', profilePic: ''}, imageUrl: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?auto=format&fit=crop&q=80&w=800",
     width: 800,
   },
   {
-    url: "https://images.unsplash.com/photo-1507426946714-15f08a43d39e?auto=format&fit=crop&q=80&w=960",
+    user: {firstName: 'kishan', lastName: 'kumar', username: 'kishankumar', profilePic: ''}, imageUrl: "https://images.unsplash.com/photo-1507426946714-15f08a43d39e?auto=format&fit=crop&q=80&w=960",
     width: 960,
   },
 ];
 
 function Photo({ image }) {
+  let name = image.user?.firstName + ' ' + image.user?.lastName
+  const {username, hireable, profilePic} = image.user
+
   return (
     <figure className="group relative mb-10 z-0 md:mb-4 md:text-xl">
       <div className="hidden absolute h-full w-full inset-0 z-10 bg-transparent md:rounded-md md:block group-hover:bg-gray-950/40 "></div>
@@ -60,25 +63,25 @@ function Photo({ image }) {
         <Tooltip
           content={
             <ProfilePreview
-              user={{ name: "kishan", username: "king", hireable: true }}
+              user={{ name, username, hireable }}
             />
           }
         >
           <Link
-            to={`/${image?.user?.username}`}
+            to={`/${username}`}
             className="flex gap-2 mb-2"
           >
             <div className="w-8 h-8 rounded-full border border-primary">
-              <img src={image?.user?.profilePic} alt="" />
+              <img src={profilePic} alt="" />
             </div>
 
             <div className="text-start flex flex-col justify-center">
               <p className="tex text-base text-gray-dark leading-3 md:text-slate-100">
-                Name
+                {name}
               </p>
-              <p className="text-xs text-gray-light md:text-slate-300">
-                hiring info
-              </p>
+              {hireable && <p className="text-[10px] leading-4 text-gray-light md:text-slate-300 flex items-center gap-x-px">
+                <span>Available for hire</span> <i className="text-xs"><IoCheckmarkCircleSharp /></i>
+              </p>}
             </div>
           </Link>
         </Tooltip>
@@ -94,7 +97,7 @@ function Photo({ image }) {
       </div>
 
       <img
-        src={image.url}
+        src={image.imageUrl}
         alt=""
         className="md:rounded-md w-full h-full object-cover z-20 "
       />
@@ -175,6 +178,8 @@ function PhotosGrid() {
     768: 1,
   };
 
+
+
   return (
     <section>
       <Masonry
@@ -183,7 +188,7 @@ function PhotosGrid() {
         columnClassName="masonry-grid-col"
       >
         {images.map((image) => (
-          <Photo image={image} key={image.url} />
+          <Photo image={image} key={image._id} />
         ))}
       </Masonry>
     </section>

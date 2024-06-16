@@ -12,6 +12,8 @@ import CollectionsGrid from '../components/Common/CollectionsGrid';
 import AccountSettings from '../components/Settings/AccountSettings';
 import EditProfile from '../components/Settings/EditProfile';
 import { createBrowserRouter } from 'react-router-dom';
+import Login from '../components/Auth/Login';
+import Signup from '../components/Auth/Signup';
 
 const router = createBrowserRouter([{
   path: "/",
@@ -19,6 +21,12 @@ const router = createBrowserRouter([{
   children: [{
     path: '',
     element: <Home/>
+  },{
+    path: 'login',
+    element: <Login/>
+  },{
+    path: 'signup',
+    element: <Signup/>
   },{
     path: 'following',
     element: <Following/>
