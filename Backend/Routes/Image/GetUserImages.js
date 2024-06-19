@@ -6,7 +6,7 @@ const router = require('express').Router();
 //@access          Public
 router.get('/users/:userId', async (req, res) => {
   const userId = req.params.userId;
-  const itemsPerPage = req.query.items; // Number of images to show per page
+  const itemsPerPage = req.query.items || 10; // Number of images to show per page
   const page = req.query.page || 1; // Get the requested page from the query parameters
   
   try {
@@ -18,9 +18,10 @@ router.get('/users/:userId', async (req, res) => {
       .sort({createdAt: -1})
       .skip(skipCount)
       .limit(itemsPerPage)
+      .populate('user', '-password')
 
     if (!images || images.length <= 0) {
-      return res.status(200).json({ message: 'No image found', images });
+      return res.status(200).json({ message: 'No image found', data: images });
     }
 
     res.status(200).json({ message: 'Images fetched', data: images });

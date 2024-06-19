@@ -16,8 +16,9 @@ const connectToMongo = () => {
     console.log("connected to MongoDb successfully");
   })
   // .then(rebuildIndexes())
-  .catch((err) => {
-    console.log(err)
+  .catch((error) => {
+    console.log("MongoDB connection failed: ", error)
+    process.exit(1)
   });
 }
 module.exports = connectToMongo;

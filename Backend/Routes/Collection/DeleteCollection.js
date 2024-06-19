@@ -1,6 +1,7 @@
 const authenticate = require('../../Middlewares/Authenticate');
 const CollectionImageRelation = require('../../Models/CollectionImageRelation');
 const ImageCollection = require('../../Models/ImageCollection');
+const User = require('../../Models/User');
 const router = require('express').Router()
 
 //@description     Delete a collection
@@ -8,7 +9,7 @@ const router = require('express').Router()
 //@access          Protected
 router.delete('/:id', authenticate, async (req, res) => {
   const id = req.params.id;
-  const user = req.user.id;
+  const user = req.user._id;
   
   try {
        
@@ -19,6 +20,9 @@ router.delete('/:id', authenticate, async (req, res) => {
 
     // Delete all image docs in this collection 
     CollectionImageRelation.deleteMany({imageCollection: deletedCollection._id})
+
+    // Decrease collection count of user 
+    User.findByIdAndUpdate(user, {$inc: {collectionsCount: -1}})
     
     res.status(200).json({message: 'Collection deleted', deletedCollection});
   } catch (error) {

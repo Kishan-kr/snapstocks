@@ -4,7 +4,7 @@ const User = require('../../Models/User')
 //@description     Get user by id
 //@route           GET /api/users/search/userid
 //@access          Public 
-router.get('/search/:id', (req, res)=> {
+router.get('/:id', (req, res)=> {
   const id = req.params.id;
 
   try {
@@ -14,7 +14,7 @@ router.get('/search/:id', (req, res)=> {
         return res.status(404).json({ error: 'User not found'})
       }  
 
-      res.status(200).json({message: 'User data fetched successfully', user});
+      res.status(200).json({message: 'User data fetched successfully', data: user});
     })
   } catch(error) {
     if(error){

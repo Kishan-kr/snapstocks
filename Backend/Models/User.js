@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  collectionsCount: {
+    type: Number,
+    default: 0
+  },
   socialMediaHandles: {
     type: Map,
     of: String

@@ -27,7 +27,7 @@ router.post('/login', [
 
     // Return if user does not exist with this email 
     if(!user) {
-      return res.status(404).json({error: 'User with this email does not exist'})
+      return res.status(404).json({error: 'Incorrect email or password'})
     }
 
     // verify password for authentication 
@@ -35,7 +35,7 @@ router.post('/login', [
     const isCorrect = bcrypt.compareSync(password, hash);
 
     if(!isCorrect) {
-      return res.status(401).json({error: 'Unauthorized access'})
+      return res.status(401).json({error: 'Incorrect email or password'})
     }
 
     // generate jwt token 

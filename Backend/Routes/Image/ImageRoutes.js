@@ -8,10 +8,12 @@ const UpdateImage = require('./UpdateImage')
 const LikeImage = require('./LikeImage')
 const DownloadImage = require('./DownloadImage')
 const CountImages = require('./CountImages')
+const GetUsersLikedImages = require('./GetUsersLikedImages')
 
 router.use(PostImage);
-router.use(GetUserImages);
 router.use(CountImages);
+router.use(GetUsersLikedImages);
+router.use(GetUserImages);
 router.use(GetImageById);
 router.use(SearchImages);
 router.use(DeleteImage);

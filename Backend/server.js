@@ -12,7 +12,7 @@ const cookieParser = require('cookie-parser');
 // import routes 
 const AuthRoutes = require('./Routes/Auth/Auth')
 const UserRoutes = require('./Routes/User/User')
-const ImageRoutes = require('./Routes/Image/Image')
+const ImageRoutes = require('./Routes/Image/ImageRoutes')
 const DownloadRoutes = require('./Routes/Download/DownloadRoutes')
 const CollectionRoutes = require('./Routes/Collection/CollectionRoutes')
 const FollowingRoutes = require('./Routes/Following/FollowingRoutes');

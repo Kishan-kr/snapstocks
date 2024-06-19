@@ -1,6 +1,7 @@
 const authenticate = require('../../Middlewares/Authenticate')
 const { body, validationResult } = require('express-validator');
 const ImageCollection = require('../../Models/ImageCollection');
+const User = require('../../Models/User');
 const router = require('express').Router()
 
 //@description     Create new collection
@@ -36,6 +37,9 @@ router.post('/', authenticate, [
     if(!newCollection) {
       return res.status(400).json({error: 'Unable to create collection'})
     }
+
+    // increase collection count of user 
+    const owner = await User.findByIdAndUpdate(user, {$inc: {collectionsCount: 1}}, {new: true})
 
     res.status(200).json({message: 'Collection created', data: newCollection});
   } catch (error) {
