@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getLatestImages } from "../actions/ImageAction";
+import { getFolloweesImages } from "../actions/ImageAction";
 
 const initialState = {
   images: [],
@@ -7,19 +7,20 @@ const initialState = {
   status: 'idle', // idle | pending | failed | completed | pending_next
   error: null
 }
-const imageSlice = createSlice({
-  name: 'images',
+
+const followeesImageSlice = createSlice({
+  name: 'followeesImages',
   initialState,
   extraReducers: (builder) => {
-    builder.addCase(getLatestImages.pending, (state) => {
+    builder.addCase(getFolloweesImages.pending, (state) => {
       state.status = state.page ? 'pending_next' : 'pending'
       state.error = null
     })
-    builder.addCase(getLatestImages.rejected, (state, action) => {
+    builder.addCase(getFolloweesImages.rejected, (state, action) => {
       state.status = 'failed'
       state.error = action.payload
     })
-    builder.addCase(getLatestImages.fulfilled, (state, action) => {
+    builder.addCase(getFolloweesImages.fulfilled, (state, action) => {
       state.status = 'completed'
       state.error = action.null
       state.images.push(...action.payload.images)
@@ -28,4 +29,4 @@ const imageSlice = createSlice({
   }
 })
 
-export default imageSlice.reducer
+export default followeesImageSlice.reducer

@@ -24,13 +24,15 @@ export const signup = createAsyncThunk('user/signup',
       console.log('Error while signing up: ', error.message);
       return rejectWithValue(error.message);
     }
-  });
+  }
+);
 
 export const login = createAsyncThunk('user/login',
   async (userData, { rejectWithValue }) => {
     try {
       const response = await fetch(`${baseUrl}/auth/login`, {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
       });
@@ -48,4 +50,50 @@ export const login = createAsyncThunk('user/login',
       console.log('Error while login: ', error.message);
       return rejectWithValue(error.message);
     }
-  });
+  }
+);
+
+export const logout = createAsyncThunk('user/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${baseUrl}/auth/logout`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      const resData = await response.json();
+
+      if (!response.ok) {
+        // When the response status is not OK, you can use the response data to provide a more detailed error message.
+        throw new Error(resData?.error || response.statusText);
+      }
+
+      return resData.data;
+    } catch (error) {
+      console.log('Error while logout: ', error.message);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getUser = createAsyncThunk('user/getUser', 
+  async (_, {rejectWithValue}) => {
+    try {
+      const response = await fetch(`${baseUrl}/users/`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+  
+      const resData = await response.json() 
+  
+      if(!response.ok) {
+        throw new Error(resData.error || response.statusText)
+      }
+  
+      return resData.data
+    } catch (error) {
+      console.log("Error getting user: ", error.message)
+      return rejectWithValue(error.message)
+    }
+  }
+)

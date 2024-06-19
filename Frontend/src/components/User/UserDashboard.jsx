@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Profile from './Profile'
 import Dropdown from '../Common/Dropdown';
 import FilterTabs from '../Common/FilterTabs';
@@ -7,43 +7,74 @@ import { FaHeart } from "react-icons/fa";
 import { RiFolderImageLine } from 'react-icons/ri'
 import { IoMdMail } from 'react-icons/io';
 import { IoEllipsisHorizontalSharp } from 'react-icons/io5';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { showToast } from '../../redux/reducers/ToastReducer';
+import Toast from '../Common/Toast';
 
-function UserDashboard(props) {
-  const {username} = props;
+function UserDashboard() {
+  const { username } = useParams()
   const [user, setUser] = useState({
-    name: 'John Doe',
-    username: username,
-    profilePic: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&q=80&w=800",
-    bio: 'Always put credits for the photographer. Your donation is very welcome. - Lifestyle photographer based in Brazil.',
-    hireable: true,
-    mail: 'john@mail.com',
-    location: 'India',
-    socials: [{ "name": 'instagram', url: 'insta.com/john' }],
-    interests: ['technology', 'water', 'computers', 'development',]
+    // name: 'John Doe',
+    // username: username,
+    // profilePic: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&q=80&w=800",
+    // bio: 'Always put credits for the photographer. Your donation is very welcome. - Lifestyle photographer based in Brazil.',
+    // hireable: true,
+    // mail: 'john@mail.com',
+    // location: 'India',
+    // socials: [{ "name": 'instagram', url: 'insta.com/john' }],
+    // interests: ['technology', 'water', 'computers', 'development',]
   })
+
+  const dispatch = useDispatch()
 
   // tabs array 
   const filterItems = [
     {
-      path: `/${user.username}`,
+      path: `/${username}`,
       text: 'Photos',
       icon: <FaRegImage />,
-      count: 25
+      count: user?.imagesCount
     },
     {
-      path: `/${user.username}/likes`,
+      path: `/${username}/likes`,
       text: 'Likes',
       icon: <FaHeart />,
-      count: 0
+      count: user?.imageLikeCount
     },
     {
-      path: `/${user.username}/collections`,
+      path: `/${username}/collections`,
       text: 'Collections',
       icon: <RiFolderImageLine />,
-      count: 10
+      count: user?.collectionsCount
     },
   ]
+
+  const getUser = async (username) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/users/username/${username}`)
+      const responseData = await response.json()
+
+      if (!response.ok) {
+        throw new Error(responseData?.error || response.statusText)
+      }
+
+      return responseData.data
+
+    } catch (error) {
+      console.error("Error while getting user by username: ", error.message)
+      dispatch(showToast({message: error.message, type: 'error'}))
+      return {}
+    }
+  }
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userData = await getUser(username);
+      setUser(userData);
+    };
+    fetchUser();
+  }, [username])
 
   return (
     <div>
@@ -84,8 +115,9 @@ function UserDashboard(props) {
       </FilterTabs>
 
       <div className='py-2 pt-6'>
-        <Outlet />
+        <Outlet context={[user?._id]} />
       </div>
+      <Toast/>
     </div>
   )
 }

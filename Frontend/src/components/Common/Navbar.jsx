@@ -1,13 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from '../../snapstocks-bg.svg';
 import Searchbar from './Searchbar';
 import Dropdown from './Dropdown';
+import Toast from './Toast'
 import { HiBars3CenterLeft } from 'react-icons/hi2'
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../redux/actions/UserActions';
+import { showToast } from '../../redux/reducers/ToastReducer';
 
 function Navbar() {
-  const { loggedIn, profilePic } = useSelector(state => state.user);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { loggedIn, profilePic, username, error, status } = useSelector(state => state.user);
+  const handleLogout = () => {
+    dispatch(logout())
+  }
+
+  useEffect(() => {
+    if(error && status === 'failed') {
+      dispatch(showToast({message: error, type: 'error'}))
+    }
+    else if(status === 'completed') {
+      navigate('/', {replace: true})
+      dispatch(showToast({message: 'successfully logged out', type: 'success'}))
+    }
+  }, [error, status])
 
   return (
     <nav className=''>
@@ -28,10 +46,10 @@ function Navbar() {
             toggleButton={<span className='w-8 h-8 aspect-square rounded-full border'> <img src={profilePic} alt="" /> </span>}>
             <div className='w-48'>
               <ul className="py-1 px-2 text-start" role="none">
-                <li><Link to="/@johndoe" className="text-gray-light block px-4 py-2 text-sm hover:text-gray-dark" role="menuitem" tabIndex="-1">View profile</Link></li>
+                <li><Link to={username} className="text-gray-light block px-4 py-2 text-sm hover:text-gray-dark" role="menuitem" tabIndex="-1">View profile</Link></li>
                 {/* <li><Link to="/" className="text-gray-light block px-4 py-2 text-sm hover:text-gray-dark" role="menuitem" tabIndex="-1">Stats</Link></li> */}
                 <li><Link to="/" className="text-gray-light block px-4 py-2 text-sm hover:text-gray-dark" role="menuitem" tabIndex="-1">Account settings</Link></li>
-                <li><Link to="/" className="text-gray-light block px-4 py-2 text-sm hover:text-gray-dark" role="menuitem" tabIndex="-1">Logout</Link></li>
+                <li><button onClick={handleLogout} className="text-gray-light block px-4 py-2 text-sm hover:text-gray-dark" role="menuitem" tabIndex="-1">Logout</button></li>
               </ul>
               {/* <hr /> */}
               {/* <ul className='py-1 px-2 text-start'> */}
@@ -40,7 +58,7 @@ function Navbar() {
             </div>
           </Dropdown> :
           <li className='hidden md:block'>
-            <button className='text-gray-light rounded-md border border-gray-light px-3 py-1 hover:text-gray-dark'>Login</button>
+            <Link to="/login" className='text-gray-light text rounded-md border border-gray-light px-3 py-[6px] hover:text-gray-dark'>Login</Link>
           </li>}
 
         <li>
@@ -66,6 +84,7 @@ function Navbar() {
           </Dropdown>
         </li>
       </ul>
+      <Toast/>
     </nav>
   )
 }

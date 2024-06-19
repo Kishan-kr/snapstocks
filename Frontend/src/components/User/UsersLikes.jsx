@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react'
-import PhotosGrid from '../Common/PhotosGrid'
-import Spinner from '../Common/Spinner'
-import { useOutletContext } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getImages } from '../../redux/actions/DashboardAction'
+import { getLikedImages } from '../../redux/actions/DashboardAction'
 import { showToast } from '../../redux/reducers/ToastReducer'
+import Spinner from '../Common/Spinner'
+import PhotosGrid from '../Common/PhotosGrid'
+import { useOutletContext } from 'react-router-dom'
 const items = 5
 
-function UserPhotos() {
+function UsersLikes() {
   const [userid] = useOutletContext()
   const dispatch = useDispatch()
-  const { data, status, error, page } = useSelector(state => state.dashboard.images)
+  const { data, status, error, page } = useSelector(state => state.dashboard.likedImages)
 
   useEffect(() => {
     if(userid)
-      dispatch(getImages({ userid, items }))
+      dispatch(getLikedImages({ userid, items }))
   }, [userid])
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function UserPhotos() {
   }, [error, status])
 
   const handleLoadMore = () => {
-    dispatch(getImages({ userid, items, page: page + 1 }))
+    dispatch(getLikedImages({ userid, items, page: page + 1 }))
   }
 
   let imagesArea = null
@@ -32,7 +32,7 @@ function UserPhotos() {
     imagesArea = <div className='text-center my-16'><Spinner variant={'green'} /></div>
   }
   else if (status === 'completed' && !data.length) {
-    imagesArea = <p className='px-2 text-gray-light text-xl max-w-[460px] text-wrap text-center my-16'>It looks like there are no images user has uploaded!</p>
+    imagesArea = <p className='px-2 text-gray-light text-xl max-w-[460px] text-wrap text-center my-16'>It looks like there are no images user has liked!</p>
   }
   else {
     imagesArea = <PhotosGrid images={data} />
@@ -59,4 +59,4 @@ function UserPhotos() {
   )
 }
 
-export default UserPhotos
+export default UsersLikes

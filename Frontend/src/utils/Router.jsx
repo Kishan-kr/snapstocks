@@ -14,6 +14,9 @@ import EditProfile from '../components/Settings/EditProfile';
 import { createBrowserRouter } from 'react-router-dom';
 import Login from '../components/Auth/Login';
 import Signup from '../components/Auth/Signup';
+import UserPhotos from '../components/User/UserPhotos';
+import UserDashboard from '../components/User/UserDashboard';
+import UsersLikes from '../components/User/UsersLikes';
 
 const router = createBrowserRouter([{
   path: "/",
@@ -52,13 +55,13 @@ const router = createBrowserRouter([{
     }]
   }, {
     path: ':username', 
-    element: <EnsureAtSymbol/>,
+    element: <UserDashboard/>,
     children: [{
       path: '',
-      element: <PhotosGrid/>
+      element: <UserPhotos/>
     }, {
       path: 'likes',
-      element: <PhotosGrid/>
+      element: <UsersLikes/>
     }, {
       path: 'collections',
       element: <CollectionsGrid/>

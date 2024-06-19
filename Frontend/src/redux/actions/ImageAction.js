@@ -26,3 +26,32 @@ export const getLatestImages = createAsyncThunk('images/getLatestImages',
     }
   }
 )
+
+export const getFolloweesImages = createAsyncThunk('images/getFolloweesImages', 
+  async ({page, items}, {rejectWithValue}) => {
+    const params = new URLSearchParams()
+    if (page)
+      params.append('page', page)
+    if (items) {
+      params.append('items', items || 10)
+    }
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/following/images?${params}`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+      const responseData = await response.json()
+  
+      if(!response.ok) {
+        throw new Error(responseData?.error || response.statusText)
+      }
+      
+      return {images: responseData.data, page: page || 1}
+
+    } catch (error) {
+      console.error("Error getting followees images: ", error.message)
+      return rejectWithValue(error.message)
+    }
+  }
+)

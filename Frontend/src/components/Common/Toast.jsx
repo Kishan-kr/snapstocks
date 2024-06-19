@@ -32,11 +32,11 @@ function Toast() {
   };
 
   useEffect(() => {
-    if (isOn && type === 'success') {
+    if (isOn) {
       const timer = setTimeout(dismissAlert, 2500);
       return () => clearTimeout(timer);
     }
-  }, [isOn, type, dismissAlert]);
+  }, [isOn, dismissAlert]);
 
   if (!visible && !isOn) return null;
 

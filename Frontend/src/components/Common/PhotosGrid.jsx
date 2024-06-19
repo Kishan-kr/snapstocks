@@ -171,7 +171,7 @@ function Photo({ image }) {
   );
 }
 
-function PhotosGrid() {
+function PhotosGrid({images}) {
   const breakpoints = {
     default: 3,
     992: 2,

@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit' 
-import { login, signup } from '../actions/UserActions'
+import { getUser, login, logout, signup } from '../actions/UserActions'
 
 const initialState = {
   name: '',
@@ -54,6 +54,36 @@ const userSlice = createSlice({
       state.profilePic = action.payload.profilePic
       state.loggedIn = true
       state.username = action.payload.username
+      state.error = null
+    })
+
+    builder.addCase(logout.pending, state => {
+      state.status = 'pending'
+      state.error = null
+    })
+    builder.addCase(logout.rejected, (state, action) => {
+      state.status = 'failed'
+      state.error = action.payload
+    })
+    builder.addCase(logout.fulfilled, (state, action) => {
+      return {...initialState, status: 'completed'}
+    })
+
+    // builder.addCase(getUser.pending, state => {
+    //   state.status = 'pending'
+    //   state.error = null
+    // })
+    // builder.addCase(getUser.rejected, (state, action) => {
+    //   state.status = 'failed'
+    //   state.error = action.payload
+    // })
+    builder.addCase(getUser.fulfilled, (state, action) => {
+      // state.status = 'completed'
+      state.name = action.payload.name
+      state.email = action.payload.email
+      state.profilePic = action.payload.profilePic
+      state.username = action.payload.username
+      state.loggedIn = true
       state.error = null
     })
   }
