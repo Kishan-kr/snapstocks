@@ -18,7 +18,7 @@ export const getLatestImages = createAsyncThunk('images/getLatestImages',
         throw new Error(Array.isArray(error) ? error[0].msg : error)
       }
       
-      return {images: responseData.data, page: page || 1}
+      return responseData.data
 
     } catch (error) {
       console.error("Error while getting latest images: ", error.message)
@@ -47,7 +47,7 @@ export const getFolloweesImages = createAsyncThunk('images/getFolloweesImages',
         throw new Error(responseData?.error || response.statusText)
       }
       
-      return {images: responseData.data, page: page || 1}
+      return responseData.data
 
     } catch (error) {
       console.error("Error getting followees images: ", error.message)

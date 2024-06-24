@@ -18,7 +18,7 @@ export const getImages = createAsyncThunk('dashboard/getImages',
         throw new Error(Array.isArray(error) ? error[0].msg : error)
       }
       
-      return {images: responseData.data, page: page || 1}
+      return responseData.data
 
     } catch (error) {
       console.error("Error while getting user images: ", error.message)
@@ -45,7 +45,7 @@ export const getLikedImages = createAsyncThunk('dashboard/getLikedImages',
         throw new Error(Array.isArray(error) ? error[0].msg : error)
       }
       
-      return {images: responseData.data, page: page || 1}
+      return responseData.data
 
     } catch (error) {
       console.error("Error while getting user images: ", error.message)
