@@ -1,3 +1,4 @@
+const optionalAuthenticate = require('../../Middlewares/OptionalAthenticate');
 const Image = require('../../Models/Image');
 const router = require('express').Router();
 const { sortMap } = require('../../Utils/Maps')
@@ -5,11 +6,12 @@ const { sortMap } = require('../../Utils/Maps')
 //@description     Get images 
 //@route           GET /api/images/
 //@access          Public
-router.get('/', async (req, res) => {
+router.get('/', optionalAuthenticate, async (req, res) => {
   const itemsPerPage = Number(req.query.items) || 10; // Number of images to show per page
   const page = Number(req.query.page) || 1; // Get the requested page from the query parameters
   const keywords = req.query.keywords || '';
   const orderBy = req.query.order_by || 'newest';
+  const loggedInUser = req.user?._id
 
   try {
     // Calculate the number of images to skip based on the requested page
@@ -61,13 +63,25 @@ router.get('/', async (req, res) => {
     }];
 
     // apply aggregation to find images 
-    const images = await Image.aggregate(pipeline);
+    let images = await Image.aggregate(pipeline);
 
     if (!images || images.length <= 0) {
-      return res.status(200).json({ message: 'No image found', data: images });
+      return res.status(200).json({ message: 'No image found', data: {images, page} });
     }
 
-    res.status(200).json({ message: 'Images found', data: images });
+    if(!loggedInUser) {
+      return res.status(200).json({ message: 'Images fetched', data: {images, page} });
+    }
+
+    // check if loggedIn user has liked these images 
+    let imageIds = images.map(image => image._id)
+    const likedImages = await UserImageLike.find({user: loggedInUser, image: {$in: imageIds}})
+    
+    let likedImageIds = new Set(likedImages.map(item => item.image.toString()))
+
+    images = images.map(image => ({...image, isLiked: likedImageIds.has(image._id.toString()) ? true : false}))
+
+    res.status(200).json({ message: 'Images fetched', data: {images, page} });
   } catch (error) {
     console.error('Error fetching images: ', error);
     res.status(500).json({ error: `Error fetching images: ${error.message}` });
