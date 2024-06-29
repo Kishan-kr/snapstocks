@@ -7,13 +7,15 @@ import Dropdown from '../Common/Dropdown';
 
 function Profile(props) {
   const { user } = props;
+  console.log('user: ', user) //test
 
   return (
     <section>
       <div className='relative flex flex-col gap-x-14 gap-y-6 px-2 py-14 items-start md:flex-row md:px-4'>
         <div className='md:max-w-sm basis-32 grow'>
-        <div className="ms-auto flex items-center justify-center h-32 w-32 aspect-square rounded-full overflow-hidden sm:h-36 sm:w-36">
-          <img src={user.profilePic} className='h-32 w-32 rounded-full object-cover sm:h-36 sm:w-36' alt="" />
+        <div className="ms-auto bg-gray-200 flex items-center justify-center h-32 w-32 aspect-square rounded-full overflow-hidden sm:h-36 sm:w-36">
+          {user?.profilePic ? <img src={user.profilePic} className='h-32 w-32 rounded-full object-cover sm:h-36 sm:w-36' alt="" />
+          : <p className='text-5xl font-medium text-gray-700'>{user?.firstName[0]}</p>}
         </div>
         </div>
 

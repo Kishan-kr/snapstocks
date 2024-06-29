@@ -105,7 +105,7 @@ function Photo({ image }) {
       <div className="flex py-2 px-1 md:absolute top-1 right-0 z-20 md:hidden md:group-hover:flex">
         <button
           title="Like this image"
-          className={`px-2 py-1 rounded ${image.isLiked? 'text-red-500': 'text-gray-light'} border border-gray-light hover:text-black hover:border-black md:bg-white md:border-none`}
+          className={`px-2 py-1 rounded ${image.isLiked? 'text-primary': 'text-gray-light'} border border-gray-light hover:text-black hover:border-black md:bg-white md:border-none`}
         >
           <FaHeart />
         </button>

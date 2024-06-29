@@ -1,5 +1,6 @@
 const optionalAuthenticate = require('../../Middlewares/OptionalAthenticate');
 const Image = require('../../Models/Image');
+const UserImageLike = require('../../Models/UserImageLike');
 const router = require('express').Router();
 const { sortMap } = require('../../Utils/Maps')
 

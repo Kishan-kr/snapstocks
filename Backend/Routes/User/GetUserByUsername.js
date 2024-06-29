@@ -10,7 +10,7 @@ router.get('/username/:username', async (req, res) => {
 
   try {
     // find user in database 
-    let user = await User.findOne({ username }).select('-password')
+    let user = await User.findOne({ username }).select('-password').lean()
     if (!user) {
       return res.status(404).json({ error: 'User not found' })
     }
@@ -18,7 +18,7 @@ router.get('/username/:username', async (req, res) => {
     // get images count
     const imagesCount = await Image.find({ user: user._id }).count()
     if(imagesCount){
-      user = {...user.toObject(), imagesCount}
+      user = {...user, name: user.firstName + ' ' + user.lastName, imagesCount}
     }
     res.status(200).json({ message: 'User data fetched successfully', data: user });
 

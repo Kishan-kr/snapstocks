@@ -10,7 +10,10 @@ export const getImages = createAsyncThunk('dashboard/getImages',
     }
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/images/users/${userid}?${params}`)
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/images/users/${userid}?${params}`, {
+        method: 'GET',
+        credentials: 'include'
+      })
       const responseData = await response.json()
 
       if(!response.ok) {
@@ -37,7 +40,10 @@ export const getLikedImages = createAsyncThunk('dashboard/getLikedImages',
     }
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/images/users/${userid}/likes?${params}`)
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/images/users/${userid}/likes?${params}`, {
+        method: 'GET',
+        credentials: 'include'
+      })
       const responseData = await response.json()
   
       if(!response.ok) {
@@ -64,7 +70,10 @@ export const getUserCollections = createAsyncThunk('dashboard/getUserCollections
     // }
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/collections/users/${userid}`)
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/collections/users/${userid}`, {
+        method: 'GET',
+        credentials: 'include'
+      })
       const responseData = await response.json()
   
       if(!response.ok) {

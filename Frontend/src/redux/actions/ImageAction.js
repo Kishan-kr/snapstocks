@@ -10,7 +10,10 @@ export const getLatestImages = createAsyncThunk('images/getLatestImages',
     }
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/images?${params}`)
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/images?${params}`, {
+        method: 'GET',
+        credentials: 'include'
+      })
       const responseData = await response.json()
   
       if(!response.ok) {
