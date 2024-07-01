@@ -15,10 +15,10 @@ import Spinner from '../Common/Spinner';
 
 // const initialUser = {
 //   name: 'John Doe',
-//   username: username,
+//   username: 'username',
 //   profilePic: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&q=80&w=800",
 //   bio: 'Always put credits for the photographer. Your donation is very welcome. - Lifestyle photographer based in Brazil.',
-//   hireable: true,
+//   hireable: false,
 //   mail: 'john@mail.com',
 //   location: 'India',
 //   socials: [{ "name": 'instagram', url: 'insta.com/john' }],
@@ -106,8 +106,9 @@ function UserDashboard() {
       <div className='sticky top-0 z-50'>
       <FilterTabs tabs={filterItems}>
         <ul className='hidden ms-auto gap-2 items-center md:flex'>
-          <li>
-            <img src={user.profilePic} className='h-6 w-6 rounded-full object-cover' alt="" />
+          <li className='bg-gray-200 h-6 w-6 rounded-full flex items-center justify-center'>
+            {user?.profilePic ? <img src={user.profilePic} className='h-6 w-6 rounded-full object-cover' alt="" />
+            : <p className='text-sm font-medium text-gray-700'>{user.name[0]}</p>}
           </li>
           <li className="me-2">
             <span>{user.name}</span>

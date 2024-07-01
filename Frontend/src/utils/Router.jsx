@@ -6,9 +6,6 @@ import SearchPhotos from '../components/Search/SearchPhotos';
 import SearchResult from '../components/Search/SearchResult';
 import SearchCollections from '../components/Search/SearchCollections';
 import SearchUsers from '../components/Search/SearchUsers';
-import EnsureAtSymbol from '../components/User/EnsureAtSymbol';
-import PhotosGrid from '../components/Common/PhotosGrid';
-import CollectionsGrid from '../components/Common/CollectionsGrid';
 import AccountSettings from '../components/Settings/AccountSettings';
 import EditProfile from '../components/Settings/EditProfile';
 import { createBrowserRouter } from 'react-router-dom';
@@ -17,6 +14,7 @@ import Signup from '../components/Auth/Signup';
 import UserPhotos from '../components/User/UserPhotos';
 import UserDashboard from '../components/User/UserDashboard';
 import UsersLikes from '../components/User/UsersLikes';
+import UserCollections from '../components/User/UserCollections';
 
 const router = createBrowserRouter([{
   path: "/",
@@ -64,7 +62,7 @@ const router = createBrowserRouter([{
       element: <UsersLikes/>
     }, {
       path: 'collections',
-      element: <CollectionsGrid/>
+      element: <UserCollections/>
     }]
   }]
 }]);

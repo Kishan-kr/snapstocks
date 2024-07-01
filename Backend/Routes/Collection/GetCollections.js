@@ -12,12 +12,16 @@ router.get('/users/:userId', optionalAuthenticate, async (req, res) => {
   try {
     // Private collections can only be accessed by their owner
     if(clientUserId === userId) {
-      const collections = await ImageCollection.find({user: userId});
+      const collections = await ImageCollection.find({user: userId})
+      .populate({path: 'user', select: '-_id firstName lastName name'});
+
       const count = collections?.length;
       return res.status(200).json({message: 'Collections found', data: {count, collections}});
     }
     
-    const collections = await ImageCollection.find({user: userId, private: false});
+    const collections = await ImageCollection.find({user: userId, private: false})
+    .populate({path: 'user', select: '-_id firstName lastName name'});
+    
     const count = collections.length;
     res.status(200).json({message: 'Collections found', data: {count, collections}});
   } catch (error) {

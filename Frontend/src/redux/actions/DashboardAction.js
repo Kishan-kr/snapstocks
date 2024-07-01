@@ -81,10 +81,10 @@ export const getUserCollections = createAsyncThunk('dashboard/getUserCollections
         throw new Error(Array.isArray(error) ? error[0].msg : error)
       }
       
-      return {images: responseData.data, page: page || 1}
+      return responseData.data?.collections
 
     } catch (error) {
-      console.error("Error while getting user images: ", error.message)
+      console.error("Error while getting user collections: ", error.message)
       return rejectWithValue(error.message)
     }
   }

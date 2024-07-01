@@ -20,7 +20,6 @@ const initialState = {
   collections: {
     data : [],
     totalCount: 0,
-    page: 0,
     status: 'idle', // pending || failed || completed 
     error: null
   },
@@ -68,8 +67,7 @@ const dashboardSlice = createSlice({
     })
     builder.addCase(getUserCollections.fulfilled, (state, action) => {
       state.collections.status = 'completed'
-      state.collections.data = action.payload.images
-      state.collections.page = action.payload.page
+      state.collections.data = action.payload
     })
   }
 })

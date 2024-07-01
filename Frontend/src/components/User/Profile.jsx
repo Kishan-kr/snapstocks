@@ -7,7 +7,6 @@ import Dropdown from '../Common/Dropdown';
 
 function Profile(props) {
   const { user } = props;
-  console.log('user: ', user) //test
 
   return (
     <section>
@@ -54,15 +53,15 @@ function Profile(props) {
 
             <div className='flex flex-col gap-y-1'>
               <div>{
-                user?.hireable &&
+                user?.hireable ?
                   <div className='flex items-center gap-2 text-blue-500'>
                     <span className='flex items-center justify-center text-base'><IoCheckmarkCircleSharp /></span>
                     <span>Available for hire</span>
-                  </div> 
-                  // <div className='flex items-center justify-center text-base text-gray-light'>
-                  //   <span><IoCloseSharp /></span>
-                  //   <span>Not available</span>
-                  // </div>
+                  </div> :
+                  <div className='flex items-center gap-2 text-base text-gray-light'>
+                    <span><IoCloseSharp /></span>
+                    <span>Not available</span>
+                  </div>
               }</div>
 
               <div>{
@@ -99,7 +98,8 @@ function Profile(props) {
                 <div className='text-start mb-2'>Interests</div>
                 <ul className="flex gap-2 flex-wrap">{
                   user.interests.map((interest, index) => (
-                    <li key={index + interest} className='px-2 rounded bg-slate-100 text-gray-light leading-8'>{interest}</li>
+                    <li key={index + interest} className='rounded border border-slate-100 bg-slate-100 text-gray-light leading-8 hover:text-gray-dark hover:border-slate-300'>
+                      <Link to={`/search/photos?keyword=${interest}`} className='px-2'>{interest}</Link></li>
                   ))
                 }</ul>
               </>

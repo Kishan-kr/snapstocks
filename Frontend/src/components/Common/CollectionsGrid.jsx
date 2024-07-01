@@ -29,22 +29,22 @@ function Collections(props) {
   )
 }
 
-function CollectionsGrid() {
-  const collectionsArray = [
-    {collecionName: 'Collection 1', photos: 10, authorName: 'John'},
-    {collecionName: 'Collection 2', photos: 12, authorName: 'Wick'},
-    {collecionName: 'Collection 3', photos: 30, authorName: 'Antonio'},
-    {collecionName: 'Collection 4', photos: 16, authorName: 'Lucifer'},
-  ]
+function CollectionsGrid({collectionsArray}) {
+  // const collectionsArray = [
+  //   {collecionName: 'Collection 1', photos: 10, authorName: 'John'},
+  //   {collecionName: 'Collection 2', photos: 12, authorName: 'Wick'},
+  //   {collecionName: 'Collection 3', photos: 30, authorName: 'Antonio'},
+  //   {collecionName: 'Collection 4', photos: 16, authorName: 'Lucifer'},
+  // ]
 
   return (
     <div className='flex flex-wrap px-2 gap-x-6 gap-y-8 md:px-4'>{
-      collectionsArray.map(collection => (
+      collectionsArray?.map(collection => (
         <Collections 
-          key={collection.collecionName} 
-          collecionName={collection.collecionName} 
-          photos={collection.photos} 
-          author={collection.authorName}
+          key={collection._id} 
+          collecionName={collection.name} 
+          photos={collection.imageCount} 
+          author={collection.user?.name}
         />
       ))
     }</div>
