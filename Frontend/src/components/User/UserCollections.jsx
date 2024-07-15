@@ -25,20 +25,20 @@ function UserCollections() {
 
   let content = null
   if (status === 'pending') {
-    content = <div className='text-center my-16'><Spinner variant={'green'} /></div>
+    content = <div className='flex flex-col items-center'>
+      <div className='text-center my-16'><Spinner variant={'green'} /></div>
+    </div>
   }
   else if (status === 'completed' && !data.length) {
-    content = <p className='px-2 text-gray-light text-xl max-w-[460px] text-wrap text-center my-16'>It looks like there are no collections user has created!</p>
+    content = <div className='flex flex-col items-center'>
+      <p className='px-2 text-gray-light text-xl max-w-[460px] text-wrap text-center my-16'>It looks like there are no collections user has created!</p>
+    </div>
   }
   else {
     content = <CollectionsGrid collectionsArray={data} />
   }
 
-  return (
-    <div className='flex flex-col items-center'>
-      {content}
-    </div>
-  )
+  return ( content )
 }
 
 export default UserCollections

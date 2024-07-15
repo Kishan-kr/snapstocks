@@ -15,6 +15,7 @@ import UserPhotos from '../components/User/UserPhotos';
 import UserDashboard from '../components/User/UserDashboard';
 import UsersLikes from '../components/User/UsersLikes';
 import UserCollections from '../components/User/UserCollections';
+import PhotoView from '../components/Common/PhotoView';
 
 const router = createBrowserRouter([{
   path: "/",
@@ -51,6 +52,9 @@ const router = createBrowserRouter([{
       path: '',
       element: <EditProfile/>
     }]
+  }, {
+    path: 'photos/:id',
+    element: <PhotoView />,
   }, {
     path: ':username', 
     element: <UserDashboard/>,

@@ -30,9 +30,9 @@ function Dropdown(props) {
       <button type="button" className="inline-flex m-0 items-center justify-center text-xl border-none" onClick={toggleDropdown}>
         {props.toggleButton}
       </button>
-      <div className={`dropdown-menu ${visible ? 'show' : 'hide'} absolute right-0 top-full z-50 mt-3 w-max origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition-all`} role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
+      {visible && <div className={`dropdown-menu ${visible ? 'show' : 'hide'} absolute right-0 top-full z-50 mt-3 w-max origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition-all`} role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
         {props.children}
-      </div>
+      </div>}
     </div>
   )
 }

@@ -11,14 +11,14 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if(!loggedIn) {
+    if (!loggedIn) {
       dispatch(getUser())
     }
   }, [loggedIn, dispatch])
 
   return (
     <div className="App">
-      {pathname !== '/login' && pathname !== '/signup' && <Navbar/>}
+      {pathname !== '/login' && pathname !== '/signup' && <Navbar />}
       <main>
         <Outlet />
       </main>

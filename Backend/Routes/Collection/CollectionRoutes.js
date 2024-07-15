@@ -15,8 +15,8 @@ const CountSearchedCollections = require('./CountSearchedCollections');
 // combine all collection routes 
 router.use(CreateCollection);
 router.use(UpdateCollection);
-router.use(GetCollectionById);
 router.use(GetCollections);
+router.use(GetCollectionById);
 router.use(DeleteCollection);
 router.use(EditCollection);
 router.use(GetImagesOfCollection);
